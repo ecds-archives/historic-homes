@@ -36,6 +36,8 @@
         { dataType: 'jsonp' }
       ).done(function ( data ) {});
       
+      // This part is the magic that makes the JSONP work
+      // The string at the beginning of the JSONP is processJSON
       function processJSON(data) {
         ATL_Hist_Homes = data;
         homes = L.geoJson(ATL_Hist_Homes,{
