@@ -1,10 +1,10 @@
 <html>
   <head>
-    <title>Historic Peachtree</title>
+    <title>DigitalAtlanta:SACRED PLACES</title>
     <meta charset="utf-8" />
-  
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
     <link rel="stylesheet" href="css/leaflet.css" />
       <!--[if lte IE 8]><link rel="stylesheet" href="css/leaflet.ie.css" /><![endif]-->
       <link rel="stylesheet" href="css/local.css" />
@@ -15,42 +15,38 @@
   <body>
     <div id="map" style="width: 1000px; height: 800px"></div>
     <div id="legend"></div>
-    
+
     <script>
-      
+
       function onEachFeature(feature, layer) {
-        var popupContent = "<h2>" + feature.properties.NAME + "</h2>";
+        var popupContent = "<h2>" + feature.properties.Name + "</h2>";
         layer.bindPopup(popupContent);
       }
-      
-      var map = L.map('map').setView([40.713816,-74.005065], 15);
-      
+
+      var map = L.map('map').setView([33.755599,-84.378487], 15);
+
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
-      
-      
-      var geoJsonUrl = "http://geospatial.library.emory.edu:8081/geoserver/tiger/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tiger:poi&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON";
-      
+
+
+      var geoJsonUrl = "http://geospatial.library.emory.edu:8081/geoserver/DigitalAtlanta/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=DigitalAtlanta:SACRED_PLACES&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON";
+
       $.ajax(geoJsonUrl,
         { dataType: 'jsonp' }
       ).done(function ( data ) {});
-      
+
       // This part is the magic that makes the JSONP work
       // The string at the beginning of the JSONP is processJSON
       function processJSON(data) {
-        ATL_Hist_Homes = data;
-        homes = L.geoJson(ATL_Hist_Homes,{
+        homes = L.geoJson(data,{
           onEachFeature: onEachFeature,
           pointToLayer: function (feature, latlng) {
             return L.marker(latlng);
           }
         }).addTo(map);
       }
-      
-      
 
-      
     </script>
   </body>
 </html>
